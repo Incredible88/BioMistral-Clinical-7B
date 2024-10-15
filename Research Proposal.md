@@ -1,5 +1,16 @@
 # Research Proposal: Utilizing Generative Large Language Models for Summarizing Clinical Records
 
+## Table of Contents
+
+1. [Introduction](#introduction)
+2. [Dataset](#dataset)
+3. [Prompt Engineering](#prompt-engineering)
+4. [Model Selection: BioMistral-7B](#model-selection)
+5. [Research Plan](#research-plan)
+6. [Expected Outcomes](#expected-outcomes)
+7. [Future Expectations](#future-expectations)
+8. [Conclusion](#conclusion)
+
 ## Introduction:
 The exponential growth of electronic health records (EHRs) has led to a vast accumulation of clinical data. Extracting actionable insights from these records is crucial for enhancing patient care, guiding clinical decisions, and supporting medical research. Traditional methods of manual chart review are time-consuming and prone to human error. The advent of large language models (LLMs) has opened new avenues for automating the summarization of medical narratives, potentially revolutionizing the way healthcare data is processed and understood.
 
@@ -83,17 +94,31 @@ For this research, we propose to utilize the BioMistral-7B model, a state-of-the
 4. **Multilingual Capabilities**: The model has been evaluated in multiple languages, showcasing its robustness across diverse linguistic contexts.
 5. **Quantization and Model Merging**: BioMistral-7B explores lightweight models obtained through quantization and model merging approaches, making it suitable for deployment on consumer-grade devices.
 
-## Research Plan:
-The proposed research will involve fine-tuning the BioMistral-7B model on the 'augmented-clinical-notes' dataset to generate concise and informative summaries of medical records. The training process will focus on optimizing the model's ability to identify and articulate the most relevant aspects of each case, such as the diagnosed condition, treatment administered, and patient outcomes.
+您的研究计划已经非常详尽，以下是根据您的要求进行的修改和补充：
 
-The research will be structured as follows:
-1. **Data Preprocessing**: Clean and format the 'augmented-clinical-notes' dataset for input into the model.
-2. **Model Fine-tuning**: Adjust the BioMistral-7B model on the prepared dataset to enhance its performance on the summarization task.
-3. **Evaluation**: Assess the model's output against a set of predefined metrics, including accuracy, coherence, and relevance.
-4. **Analysis**: Analyze the model's performance and identify areas for further improvement.
+## Research Plan:
+The proposed research will involve fine-tuning the BioMistral-7B model on the 'augmented-clinical-notes' dataset with a focus on generating concise and informative summaries of medical records. The process will be detailed as follows:
+
+1. **Data Preprocessing and Annotation:**
+   - Thoroughly clean and format the 'augmented-clinical-notes' dataset, ensuring that high-quality and relevant data are retained for the training set. This step will involve meticulous data annotation to mark key points within the medical records, which will serve as the ground truth for training the model.
+
+2. **Model Fine-tuning:**
+   - Utilize the LoRA (Low-Rank Adaptation) technique to reduce computational resource consumption while fine-tuning the BioMistral-7B model on the prepared dataset. LoRA introduces low-rank matrices to update model weights, allowing for a more efficient training process with reduced memory usage.
+
+3. **Evaluation:**
+   - Employ a variety of text generation evaluation methods to assess the model's output. This will include metrics such as ROUGE (Recall-Oriented Understudy for Gisting Evaluation), which is commonly used to evaluate the quality of generated text, especially in summarization tasks. Other metrics may include BLEU (Bilingual Evaluation Understudy), METEOR (Metric for Evaluation of Translation with Explicit Ordering), and perplexity scores to gauge the model's performance in terms of accuracy, coherence, and relevance.
+
+4. **Analysis and Iteration:**
+   - Analyze the model's performance based on the evaluation metrics and identify areas for further improvement. This iterative process will involve refining the model's architecture, training process, and evaluation criteria to optimize its performance on the medical summarization task.
 
 ## Expected Outcomes:
-The successful implementation of this project could lead to the development of a powerful tool for healthcare providers to quickly grasp the essence of patient cases, thereby improving the efficiency of clinical workflows. Additionally, the insights gained from this research could inform the future development of AI-assisted diagnostic tools and personalized treatment plans.
+The successful implementation of this project will result in a fine-tuned model, tentatively named BioMistral-noteSum, which will be capable of providing concise summaries of medical records. This model will be made openly available on Hugging Face, allowing the medical community to utilize and build upon this resource for various applications in the healthcare sector.
 
-**Conclusion:**
+## Future Expectations:
+The extracted key points from the medical records can be integrated with knowledge graphs to enable more generalized applications in the medical field. This integration can enhance the model's ability to provide context-aware summaries and support decision-making processes in clinical settings.
+
+## Conclusion:
 The utilization of BioMistral-7B for summarizing medical records represents a significant step forward in leveraging AI for healthcare applications. This research has the potential to transform the way medical data is analyzed and interpreted, ultimately contributing to better patient outcomes and more informed clinical decisions.
+
+By following this detailed research plan, we aim to develop a model that not only meets the current needs of medical data summarization but also paves the way for future advancements in AI-assisted healthcare. 
+
