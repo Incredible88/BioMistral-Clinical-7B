@@ -94,8 +94,6 @@ For this research, we propose to utilize the BioMistral-7B model, a state-of-the
 4. **Multilingual Capabilities**: The model has been evaluated in multiple languages, showcasing its robustness across diverse linguistic contexts.
 5. **Quantization and Model Merging**: BioMistral-7B explores lightweight models obtained through quantization and model merging approaches, making it suitable for deployment on consumer-grade devices.
 
-您的研究计划已经非常详尽，以下是根据您的要求进行的修改和补充：
-
 ## Research Plan:
 The proposed research will involve fine-tuning the BioMistral-7B model on the 'augmented-clinical-notes' dataset with a focus on generating concise and informative summaries of medical records. The process will be detailed as follows:
 
