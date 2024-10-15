@@ -1,12 +1,12 @@
-# Research Proposal: Utilizing Generative Large Language Models for Summarizing Medical Records
+# Research Proposal: Utilizing Generative Large Language Models for Summarizing Clinical Records
 
-**Introduction:**
+## Introduction:
 The exponential growth of electronic health records (EHRs) has led to a vast accumulation of clinical data. Extracting actionable insights from these records is crucial for enhancing patient care, guiding clinical decisions, and supporting medical research. Traditional methods of manual chart review are time-consuming and prone to human error. The advent of large language models (LLMs) has opened new avenues for automating the summarization of medical narratives, potentially revolutionizing the way healthcare data is processed and understood.
 
-**Dataset:**
-The dataset chosen for this study is the 'augmented-clinical-notes' dataset available on Hugging Face. This dataset comprises 30,000 real clinical notes, which offer a rich source for training and evaluating the performance of generative models in the medical domain. The notes are diverse and cover a wide range of medical conditions and treatments, making it an ideal dataset for developing a robust summarization model.
+## Dataset:
+The dataset chosen for this study is the 'augmented-clinical-notes' dataset available on Hugging Face：https://huggingface.co/datasets/AGBonnet/augmented-clinical-notes. This dataset comprises 30,000 real clinical notes, which offer a rich source for training and evaluating the performance of generative models in the medical domain. The notes are diverse and cover a wide range of medical conditions and treatments, making it an ideal dataset for developing a robust summarization model.
 
-**Prompt Engineering:**
+## Prompt Engineering:
 To ensure the model generates structured and informative summaries, we will use the following prompt format:
 
 ```json
@@ -71,7 +71,7 @@ To ensure the model generates structured and informative summaries, we will use 
 }
 ```
 
-**Model Selection: BioMistral-7B**
+## Model Selection: BioMistral-7B
 For this research, we propose to utilize the BioMistral-7B model, a state-of-the-art generative LLM developed by Yanis Labrak, Adrien Bazoge, Emmanuel Morin, Pierre-Antoine Gourraud, Mickael Rouvier, and Richard Dufour. Launched in 2024, BioMistral-7B has demonstrated exceptional capabilities in processing complex biomedical and clinical text. The model stands out due to its ability to understand and generate human-like responses in a medical context, which is attributed to its extensive pre-training on a diverse corpus of biomedical literature, clinical guidelines, and patient records.  
 - Paper address:https://arxiv.org/abs/2402.10373
 - Open source address: https://huggingface.co/BioMistral/BioMistral-7B
@@ -83,7 +83,7 @@ For this research, we propose to utilize the BioMistral-7B model, a state-of-the
 4. **Multilingual Capabilities**: The model has been evaluated in multiple languages, showcasing its robustness across diverse linguistic contexts.
 5. **Quantization and Model Merging**: BioMistral-7B explores lightweight models obtained through quantization and model merging approaches, making it suitable for deployment on consumer-grade devices.
 
-**Research Plan:**
+## Research Plan:
 The proposed research will involve fine-tuning the BioMistral-7B model on the 'augmented-clinical-notes' dataset to generate concise and informative summaries of medical records. The training process will focus on optimizing the model's ability to identify and articulate the most relevant aspects of each case, such as the diagnosed condition, treatment administered, and patient outcomes.
 
 The research will be structured as follows:
@@ -92,7 +92,7 @@ The research will be structured as follows:
 3. **Evaluation**: Assess the model's output against a set of predefined metrics, including accuracy, coherence, and relevance.
 4. **Analysis**: Analyze the model's performance and identify areas for further improvement.
 
-**Expected Outcomes:**
+## Expected Outcomes:
 The successful implementation of this project could lead to the development of a powerful tool for healthcare providers to quickly grasp the essence of patient cases, thereby improving the efficiency of clinical workflows. Additionally, the insights gained from this research could inform the future development of AI-assisted diagnostic tools and personalized treatment plans.
 
 **Conclusion:**
