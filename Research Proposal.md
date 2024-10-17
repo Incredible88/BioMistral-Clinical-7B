@@ -1,4 +1,4 @@
-# Research Proposal: Utilizing Generative Large Language Models for Summarizing Clinical Records
+# Research Proposal: Enhancing BioMistral-7B with Incremental Learning for Clinical Knowledge
 
 ## Table of Contents
 
@@ -8,11 +8,30 @@
 4. [Model Selection: BioMistral-7B](#model-selection)
 5. [Research Plan](#research-plan)
 6. [Expected Outcomes](#expected-outcomes)
-7. [Future Expectations](#future-expectations)
-8. [Conclusion](#conclusion)
+
 
 ## Introduction:
-The exponential growth of electronic health records (EHRs) has led to a vast accumulation of clinical data. Extracting actionable insights from these records is crucial for enhancing patient care, guiding clinical decisions, and supporting medical research. Traditional methods of manual chart review are time-consuming and prone to human error. The advent of large language models (LLMs) has opened new avenues for automating the summarization of medical narratives, potentially revolutionizing the way healthcare data is processed and understood.
+
+The exponential growth of electronic health records (EHRs) has led to an unprecedented accumulation of clinical data, presenting both an opportunity and a challenge. The opportunity lies in the potential insights that can be gleaned from this data to enhance patient care, inform clinical decisions, and support medical research. The challenge, however, is the sheer volume and complexity of the data, which traditional manual review methods are ill-equipped to handle efficiently and accurately.
+
+Large Language Models (LLMs), particularly those specialized for biomedical domains like BioMistral-7B, offer a promising avenue for automating the extraction and summarization of medical narratives. BioMistral-7B, an open-source LLM, has demonstrated remarkable capabilities in processing complex clinical texts. Yet, the model's understanding of the intricate relationships between medical conditions, symptoms, diagnoses, treatments, and outcomes can be further refined to better serve real-world clinical needs.
+
+### Research Gaps:
+
+The primary research gaps this project aims to address are:
+
+1. **Depth of Clinical Understanding**: While BioMistral-7B is adept at handling biomedical texts, there is a need to enhance its understanding of the specific nuances of clinical data, including the subtleties of disease symptoms, diagnostic procedures, and treatment efficacy.
+
+2. **Adaptability to Clinical Notes**: Clinical notes are rich in unstructured data that may not align with the structured datasets used for initial model training. There is a gap in adapting LLMs to effectively interpret and learn from the diverse and complex nature of real-world clinical narratives.
+
+3. **Incremental Learning for Continuous Improvement**: The ability of LLMs to incrementally learn from new data, thereby continuously improving their knowledge base and performance, is a critical area for development. This is particularly important in the fast-paced field of healthcare, where medical knowledge and best practices evolve continuously.
+
+The 'augmented-clinical-notes' dataset, available on Hugging Face, is a valuable resource for this project. It contains a wealth of clinical notes that provide a comprehensive view of patient symptoms, diagnoses, treatments, and outcomes. The quality and breadth of this dataset make it an excellent choice for training and evaluating the performance of generative models in the medical domain. By employing precise prompting engineering (PE), we can extract key knowledge points from these notes, which will be used to incrementally train BioMistral-7B. This approach has the potential to significantly enhance the model's clinical knowledge base, thereby improving its ability to generate informative and structured medical summaries.
+
+To evaluate the effectiveness of the incremental training, we will utilize the Supervised Fine-tuning Benchmark datasets mentioned in the BioMistral-7B paper. These datasets, available at [bigbio/med_qa](https://huggingface.co/datasets/bigbio/med_qa) and [openlifescienceai/medmcqa](https://huggingface.co/datasets/openlifescienceai/medmcqa), provide a robust framework for benchmarking the performance of medical LLMs. Although there may have been temporary issues accessing these links, they offer a comprehensive set of medical QA tasks that will allow us to rigorously assess the improvements in BioMistral-7B's capabilities after incremental training.
+
+By addressing these gaps, this project aims to enhance the clinical knowledge understanding of BioMistral-7B, making it a more powerful tool for processing and summarizing medical records, and ultimately contributing to more informed clinical decisions and better patient outcomes.
+
 
 ## Dataset:
 The dataset chosen for this study is the 'augmented-clinical-notes' dataset available on Hugging Face：https://huggingface.co/datasets/AGBonnet/augmented-clinical-notes. This dataset comprises 30,000 real clinical notes, which offer a rich source for training and evaluating the performance of generative models in the medical domain. The notes are diverse and cover a wide range of medical conditions and treatments, making it an ideal dataset for developing a robust summarization model.
@@ -95,28 +114,41 @@ For this research, we propose to utilize the BioMistral-7B model, a state-of-the
 5. **Quantization and Model Merging**: BioMistral-7B explores lightweight models obtained through quantization and model merging approaches, making it suitable for deployment on consumer-grade devices.
 
 ## Research Plan:
-The proposed research will involve fine-tuning the BioMistral-7B model on the 'augmented-clinical-notes' dataset with a focus on generating concise and informative summaries of medical records. The process will be detailed as follows:
 
-1. **Data Preprocessing and Annotation:**
-   - Thoroughly clean and format the 'augmented-clinical-notes' dataset, ensuring that high-quality and relevant data are retained for the training set. This step will involve meticulous data annotation to mark key points within the medical records, which will serve as the ground truth for training the model.
+This research plan outlines a systematic approach to incrementally train the BioMistral-7B model using the 'augmented-clinical-notes' dataset, with the goal of enhancing its clinical knowledge understanding. The plan is designed to leverage the model's existing capabilities and improve its performance through targeted fine-tuning.
 
-2. **Model Fine-tuning:**
-   - Utilize the LoRA (Low-Rank Adaptation) technique to reduce computational resource consumption while fine-tuning the BioMistral-7B model on the prepared dataset. LoRA introduces low-rank matrices to update model weights, allowing for a more efficient training process with reduced memory usage.
+1. **Data Preparation and Analysis**:
+   - Begin with a thorough analysis of the 'augmented-clinical-notes' dataset to understand its structure, content, and the range of medical conditions it covers.
+   - Perform data cleaning to ensure that the dataset is free from inconsistencies or inaccuracies that could affect the training process.
 
-3. **Evaluation:**
-   - Employ a variety of text generation evaluation methods to assess the model's output. This will include metrics such as ROUGE (Recall-Oriented Understudy for Gisting Evaluation), which is commonly used to evaluate the quality of generated text, especially in summarization tasks. Other metrics may include BLEU (Bilingual Evaluation Understudy), METEOR (Metric for Evaluation of Translation with Explicit Ordering), and perplexity scores to gauge the model's performance in terms of accuracy, coherence, and relevance.
+2. **Prompt Engineering (PE)**:
+   - Develop a set of prompts that will effectively guide the model in extracting key information from the clinical notes, such as symptoms, diagnoses, treatments, and outcomes.
+   - Refine the prompts to maximize the relevance and accuracy of the knowledge extracted from the dataset.
 
-4. **Analysis and Iteration:**
-   - Analyze the model's performance based on the evaluation metrics and identify areas for further improvement. This iterative process will involve refining the model's architecture, training process, and evaluation criteria to optimize its performance on the medical summarization task.
+3. **Incremental Training**:
+   - Use the extracted knowledge points as input for incremental training of the BioMistral-7B model.
+   - Implement a controlled training regimen that introduces new knowledge points gradually, allowing the model to integrate this information effectively without forgetting previously learned concepts.
+
+4. **Model Evaluation**:
+   - Employ the Supervised Fine-tuning Benchmark datasets to evaluate the performance of the incrementally trained model.
+   - Compare the performance of the incrementally trained model against the original BioMistral-7B model on these benchmark tasks to quantify improvements in clinical knowledge understanding.
+
+5. **Performance Metrics**:
+   - Utilize evaluation metrics such as accuracy, precision, recall, and F1 score to assess the model's performance on the benchmark datasets.
+   - Analyze the model's output quality in terms of coherence, relevance, and completeness of the summaries generated from the clinical notes.
+
+By following this research plan, we aim to enhance BioMistral-7B's ability to understand and summarize clinical records effectively. The expected outcome is a model that can provide more accurate, coherent, and contextually relevant summaries, thereby supporting clinical decision-making and contributing to the advancement of AI-assisted healthcare.
 
 ## Expected Outcomes:
-The successful implementation of this project will result in a fine-tuned model, tentatively named BioMistral-noteSum, which will be capable of providing concise summaries of medical records. This model will be made openly available on Hugging Face, allowing the medical community to utilize and build upon this resource for various applications in the healthcare sector.
 
-## Future Expectations:
-The extracted key points from the medical records can be integrated with knowledge graphs to enable more generalized applications in the medical field. This integration can enhance the model's ability to provide context-aware summaries and support decision-making processes in clinical settings.
+The project anticipates the following key outcomes:
 
-## Conclusion:
-The utilization of BioMistral-7B for summarizing medical records represents a significant step forward in leveraging AI for healthcare applications. This research has the potential to transform the way medical data is analyzed and interpreted, ultimately contributing to better patient outcomes and more informed clinical decisions.
+1. **Advanced Clinical Knowledge**: The incrementally trained BioMistral-7B model is expected to exhibit an enhanced understanding of clinical data, including complex disease symptoms, diagnoses, and treatment efficacy.
 
-By following this detailed research plan, we aim to develop a model that not only meets the current needs of medical data summarization but also paves the way for future advancements in AI-assisted healthcare. 
+2. **Improved Summarization**: The model should generate more accurate and insightful summaries of clinical notes, which are essential for efficient patient care and medical research.
 
+3. **Benchmarked Performance**: Utilizing the Supervised Fine-tuning Benchmark, we expect to demonstrate the improved performance of the incrementally trained model over the original BioMistral-7B, validating the effectiveness of our approach.
+
+4. **Model Availability**: The incrementally trained BioMistral-7B model, post successful enhancement, will be made publicly available on Hugging Face. This will allow the broader research community and healthcare practitioners to leverage this improved model for their own applications and further research.
+
+By achieving these outcomes, the project will contribute to the advancement of AI in healthcare, providing tools that can better support the interpretation and utilization of medical data.
