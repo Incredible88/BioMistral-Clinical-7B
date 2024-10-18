@@ -37,70 +37,83 @@ By addressing these gaps, this project aims to enhance the clinical knowledge un
 The dataset chosen for this study is the 'augmented-clinical-notes' dataset available on Hugging Face：https://huggingface.co/datasets/AGBonnet/augmented-clinical-notes. This dataset comprises 30,000 real clinical notes, which offer a rich source for training and evaluating the performance of generative models in the medical domain. The notes are diverse and cover a wide range of medical conditions and treatments, making it an ideal dataset for developing a robust summarization model.
 
 ## Prompt Engineering:
-To ensure the model generates structured and informative summaries, we will use the following prompt format:
+The primary objective of this research is to develop a structured approach to clinical note analysis that enhances the granularity and relational clarity of patient data. By transforming unstructured clinical notes into a standardized JSON format, we aim to capture more detailed and specific information for each patient case. This method will allow for clearer segmentation of data into distinct categories such as Chief Complaints, Medical History, Diagnostic Findings, Diagnosis, Treatment, and Outcome, with each category having a clearly defined set of sub-fields.
 
-```json
-{
-  "Conclusion statements": {
-    "Core": "Summarize the medical condition diagnosed, based on clinical findings and diagnostic tests.",
-    "Context": [
-      "List the symptoms and signs that were observed and contributed to the diagnosis."
-    ],
-    "Disc. Context": [
-      "List additional details that provide context or further explanation of the diagnosis."
-    ]
-  },
-  "Second statements": {
-    "Core": "Describe the outcome of the treatment and the patient's subsequent health status.",
-    "Context": [
-      "Describe the main treatment methods that were administered."
-    ],
-    "Disc. Context": [
-      "Describe the results of the treatment, including any complications or improvements."
-    ]
-  },
-  "Conclusion": {
-    "Disease": "Name the diagnosed disease.",
-    "Treatment": "List the treatments performed.",
-    "Findings": "Summarize key diagnostic findings.",
-    "Outcome": "State the overall outcome after treatment."
-  }
-}
-```
+The structured JSON format will serve as the sole input for our model, replacing the need for raw text data. This approach is anticipated to significantly benefit the model's training and incremental learning processes by providing a more organized and comprehensive dataset. The model will be able to more accurately identify patterns, correlations, and dependencies between different aspects of patient care, leading to improved diagnostic and treatment predictions.
 
-**Example Output:**
-```json
+By focusing on the key elements of each patient's medical history and outcome, the model will be better equipped to handle new, unseen data, thus enhancing its generalization capabilities. This structured input will also facilitate the model's ability to incremental training, allowing it to adapt to new information and updates in medical knowledge over time without the need for complete retraining.
+
+The use of this structured data format will not only streamline the data preprocessing stage but also provide a robust foundation for building a model that can scale and adapt to the evolving complexities of clinical data management.   
+
+**Prompt as follows:** 
+``` 
+As a professional clinical notes organizer, my task is to take a set of clinical notes and structure them into a JSON format. This format will help in standardizing the patient data for better analysis and record-keeping. Below, I will explain each field in the JSON structure and provide an example based on a hypothetical clinical note.
+
+JSON Field Explanation:
+
+PatientInformation: This section captures the patient's presenting complaints and historical medical information.   
+ChiefComplaints: A list of the main issues the patient is experiencing, as reported by the patient.  
+MedicalHistory: Includes any past injuries or significant health issues that are relevant to the current condition.  
+DiagnosticFindings: A list of diagnostic tests conducted and their findings. Each item includes the type of Test conducted and the Finding from that test  
+
+Diagnosis: This section includes the diagnosed disease.  
+Disease: Details the name, type, and location of the diagnosed disease.  
+
+TreatmentAndOutcome: This section outlines the treatment provided and the subsequent outcome.  
+Treatment: Describes the type of treatment and any specific details about the procedure.  
+Type: The general category of treatment.  
+Details: Specifics about what the treatment entailed.  
+Postoperative Course: Information about the recovery process after surgery.  
+Recovery: General description of the recovery process.  
+FollowUp: Information about any follow-up care or observations.  
+FunctionalStatus: Any observations about the patient's functionality or quality of life post-treatment.    
+
+Example Output:
+
 {
-  "Conclusion statements": {
-    "Core": "The patient was diagnosed with sclerosing xanthofibroma of the thoracic wall, a benign tumor with distinct clinical and radiological features.",
-    "Context": [
+  "PatientInformation": {
+    "ChiefComplaints": [
       "Complaints of pain and swelling in the right back for several weeks",
       "No significant health problems except a thoracic trauma one year prior"
     ],
-    "Disc. Context": [
-      "X-ray showed a shadow in the lower part of the right hemithorax",
-      "CT-scan revealed a tumor with heterogeneous density and destruction of the 9th rib"
+    "MedicalHistory": {
+      "PreviousInjury": "Thoracic trauma with a simple fracture of the 9th right rib"
+    },
+    "DiagnosticFindings": [
+      {
+        "Test": "X-ray",
+        "Finding": "A shadow in the lower part of the right hemithorax"
+      },
+      {
+        "Test": "CT-scan",
+        "Finding": "A tumor with heterogeneous density and destruction of the 9th rib"
+      }
     ]
   },
-  "Second statements": {
-    "Core": "The patient underwent successful surgical removal of the tumor and showed no signs of recurrence two years post-surgery.",
-    "Context": [
-      "Oncologic resection of the tumor involving three ribs"
-    ],
-    "Disc. Context": [
-      "Postoperative recovery was uneventful, with the patient discharged in good condition",
-      "Two-year follow-up CT-scan showed no recurrence or new developments"
-    ]
+  "Diagnosis": {
+    "Disease": {
+      "Name": "Sclerosing xanthofibroma",
+      "Type": "Benign tumor",
+      "Location": "Thoracic wall"
+    },
   },
-  "Conclusion": {
-    "Disease": "Sclerosing xanthofibroma",
-    "Treatment": "Surgical resection and plastic repair with polypropylene mesh",
-    "Findings": "Tumor of the thoracic wall with micronodular infiltrations in both lungs",
-    "Outcome": "No recurrence or new developments two years post-surgery, patient returned to work one month after surgery"
+  "TreatmentAndOutcome": {
+    "Treatment": {
+      "Type": "Surgical resection and plastic repair",
+      "Details": "Involving three ribs and reconstruction with polypropylene mesh"
+    },
+    "Postoperative Course": {
+      "Recovery": "Uneventful",
+      "DischargeStatus": "Good condition"
+    },
+    "FollowUp": {
+      "Duration": "Two years",
+      "FunctionalStatus": "Patient returned to work one month after surgery"
+    }
   }
 }
-```
 
+```
 ## Model Selection: BioMistral-7B
 For this research, we propose to utilize the BioMistral-7B model, a state-of-the-art generative LLM developed by Yanis Labrak, Adrien Bazoge, Emmanuel Morin, Pierre-Antoine Gourraud, Mickael Rouvier, and Richard Dufour. Launched in 2024, BioMistral-7B has demonstrated exceptional capabilities in processing complex biomedical and clinical text. The model stands out due to its ability to understand and generate human-like responses in a medical context, which is attributed to its extensive pre-training on a diverse corpus of biomedical literature, clinical guidelines, and patient records.  
 - Paper address:https://arxiv.org/abs/2402.10373
