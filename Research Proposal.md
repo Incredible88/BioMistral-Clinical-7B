@@ -143,8 +143,9 @@ This research plan outlines a systematic approach to incrementally train the Bio
    - Implement a controlled training regimen that introduces new knowledge points gradually, allowing the model to integrate this information effectively without forgetting previously learned concepts.
 
 4. **Model Evaluation**:
-   - Employ the Supervised Fine-tuning Benchmark datasets to evaluate the performance of the incrementally trained model.
-   - Compare the performance of the incrementally trained model against the original BioMistral-7B model on these benchmark tasks to quantify improvements in clinical knowledge understanding.
+   - **Datasets**: For the evaluation phase, I will be utilizing the same datasets mentioned in the BioMistral-7B paper: [bigbio/med_qa](https://huggingface.co/datasets/bigbio/med_qa) and [openlifescienceai/medmcqa](https://huggingface.co/datasets/openlifescienceai/medmcqa). These datasets will provide a relevant and challenging benchmark for assessing the performance of the incrementally trained model.
+   - **Evaluation Method**: The model will be evaluated using the Supervised Fine-tuning Benchmark method, which is consistent with the approach taken in the original BioMistral-7B paper. This method ensures that the evaluation is conducted in a standardized manner, allowing for a direct comparison of the incrementally trained model against the original model.
+   - **Performance Comparison**: The performance of the incrementally trained model will be compared against the original BioMistral-7B model on these benchmark tasks. This comparison will serve to quantify the improvements in the model's understanding of clinical knowledge and its ability to summarize medical records effectively.  
 
 5. **Performance Metrics**:
    - Utilize evaluation metrics such as accuracy, precision, recall, and F1 score to assess the model's performance on the benchmark datasets.
