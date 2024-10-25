@@ -1,4 +1,4 @@
-# Research Proposal: Enhancing BioMistral-7B with Incremental Learning for Clinical Knowledge
+# Research Proposal: Improving Clinical Knowledge in Large Language Models through Incremental Learning Methods
 
 ## Table of Contents
 
@@ -14,13 +14,13 @@
 
 The exponential growth of electronic health records (EHRs) has led to an unprecedented accumulation of clinical data, presenting both an opportunity and a challenge. The opportunity lies in the potential insights that can be gleaned from this data to enhance patient care, inform clinical decisions, and support medical research. The challenge, however, is the sheer volume and complexity of the data, which traditional manual review methods are ill-equipped to handle efficiently and accurately.
 
-Large Language Models (LLMs), particularly those specialized for biomedical domains like BioMistral-7B, offer a promising avenue for automating the extraction and summarization of medical narratives. BioMistral-7B, an open-source LLM, has demonstrated remarkable capabilities in processing complex clinical texts. Yet, the model's understanding of the intricate relationships between medical conditions, symptoms, diagnoses, treatments, and outcomes can be further refined to better serve real-world clinical needs.
+Large Language Models (LLMs), particularly those specialized for biomedical domains like BioMistral-7B, offer a promising avenue for automating the extraction and summarization of medical narratives. BioMistral-7B, an open-source LLM, has demonstrated remarkable capabilities in processing complex clinical texts. To further refine its understanding and better serve real-world clinical needs, we propose to employ incremental learning techniques. This approach involves continuously updating the model's knowledge base with new clinical data, allowing it to adapt and improve over time. Specifically, we will leverage a structured format of clinical notes to provide a clear and organized input for the model. This method will enable the model to more accurately identify patterns, correlations, and dependencies between different aspects of patient care, leading to improved diagnostic and treatment predictions. By focusing on the key elements of each patient's medical history and outcome, and by using prompt engineering to highlight these elements, we aim to enhance the model's ability to generalize and adapt to new, unseen medical data, thereby achieving a deeper comprehension of the clinical domain.
 
 ### Research Gaps:
 
 The primary research gaps this project aims to address are:
 
-1. **Depth of Clinical Understanding**: While BioMistral-7B is adept at handling biomedical texts, there is a need to enhance its understanding of the specific nuances of clinical data, including the subtleties of disease symptoms, diagnostic procedures, and treatment efficacy.
+1. **Depth of Clinical Understanding**: There is a need to enhance the understanding of the specific nuances of clinical data, including the subtleties of disease symptoms, diagnostic procedures, and treatment efficacy.  
 
 2. **Adaptability to Clinical Notes**: Clinical notes are rich in unstructured data that may not align with the structured datasets used for initial model training. There is a gap in adapting LLMs to effectively interpret and learn from the diverse and complex nature of real-world clinical narratives.
 
@@ -36,7 +36,7 @@ By addressing these gaps, this project aims to enhance the clinical knowledge un
 
 The following research questions will guide the exploration and development within this project, ensuring a focused and goal-oriented approach towards enhancing BioMistral-7B for clinical knowledge tasks:
 
-1. **RQ1: How can incremental learning be effectively integrated into BioMistral-7B to improve its understanding of clinical narratives?**
+1. **RQ1: How can incremental learning be effectively integrated into LLMs to improve their understanding of clinical narratives?**
    - This question aims to explore the feasibility and methods of implementing incremental learning within the BioMistral-7B model. The goal is to determine the best practices for continuously updating the model's knowledge base with new clinical data. Specifically, this incremental learning will utilize self-supervised training techniques, enabling the generative large model to better comprehend domain-specific knowledge before fine-tuning on downstream tasks.
 
 
@@ -44,11 +44,12 @@ The following research questions will guide the exploration and development with
    - This research question focuses on developing and refining prompt engineering techniques to maximize the extraction of key medical details from clinical notes. The aim is to identify prompts that lead to the most accurate and comprehensive data structuring. To achieve this, we will explore how core statements within clinical notes, supported by contextual background, can be effectively highlighted through prompt engineering. This approach will enable the large language model to not only extract data but also to better understand the causal relationships within the medical domain. By doing so, the model will be able to grasp the underlying mechanisms that connect symptoms, diagnoses, treatments, and outcomes, thereby enhancing its ability to process and summarize clinical narratives in a manner that is coherent with the domain's knowledge structure.
 
 
-3. **RQ3: To what extent can the structured JSON format of clinical notes enhance the model's ability to generalize and adapt to new, unseen medical data?**
-   - This research question delves into the innovative use of structured JSON formatting as a means to enhance the BioMistral-7B model's generalization and adaptability to novel medical data. Given the challenges in constructing comprehensive knowledge graphs, especially within the dynamic field of healthcare, this study explores the potential of JSON structures to articulate critical relationships and causal links among different medical entities. The structured JSON format will be utilized to encapsulate core assertions along with their contextual backdrop, mirroring the associative capabilities of knowledge graphs. The aim is to investigate whether this structured approach can endow the large language model with a deeper comprehension of the interconnections within clinical narratives, thereby achieving effects analogous to those of a knowledge graph. This research will provide valuable insights into the feasibility and efficacy of using structured data representations as a bridge to enhance clinical knowledge understanding in the absence of mature medical knowledge graph models.
+3. **RQ3: To what extent can a structured format of clinical notes enhance the model's ability to generalize and adapt to new, unseen medical data?**
+   - This research question explores the impact of using a structured format, such as JSON, to enhance the BioMistral-7B model's capacity to generalize and adapt to novel medical data. The structured format is designed to capture the complexity and nuances of clinical narratives by articulating critical relationships and causal links among medical entities. This approach mirrors the associative capabilities of knowledge graphs, allowing the model to encapsulate core assertions within their contextual backdrop. The investigation will assess whether this method can provide the large language model with a more profound understanding of the interconnections within clinical data, similar to the effects achieved by knowledge graphs. By doing so, this research will offer insights into the potential of structured data representations to bolster clinical knowledge comprehension, especially in the absence of mature medical knowledge graph models.
 
-4. **RQ4: How does the performance of the incrementally trained BioMistral-7B model compare to the original model on standardized medical question-answering tasks, and what are the potential limitations and ethical considerations of using an AI model like BioMistral-7B in real-world clinical settings?**
-   - This research question aims to evaluate the effectiveness of the incremental training process by comparing the performance of the enhanced BioMistral-7B model against the original on standardized medical QA tasks. The primary goal is to quantify any improvements in the model's clinical knowledge understanding and its ability to summarize medical records effectively. Furthermore, this question seeks to explore the potential limitations of deploying such AI models in real-world clinical settings, including ethical considerations and implications for patient care. By addressing these aspects, the research will provide a comprehensive assessment of the benefits and challenges associated with using the incrementally trained BioMistral-7B model in practical healthcare scenarios, ensuring that its application is both effective and responsible.
+
+4. **RQ4: How does the performance of the incrementally trained medical language model compare to the original model on standardized medical question-answering tasks, and what are the potential limitations and ethical considerations of using such a model in real-world clinical settings?**
+   - This research question is designed to assess the effectiveness of incremental training on a medical language model, specifically BioMistral-7B, by comparing its performance against the original model on standardized medical QA tasks. The primary objective is to quantify the improvements in the model's ability to understand clinical knowledge and to summarize medical records effectively. Additionally, this question aims to investigate the potential limitations and ethical considerations associated with the deployment of AI models in real-world clinical settings. By examining these factors, the research will provide a thorough evaluation of the benefits and challenges of using incrementally trained medical language models in practical healthcare environments, with a focus on ensuring their application is both effective and adheres to ethical standards.
 
 By addressing these research questions, the project will not only enhance the capabilities of BioMistral-7B but also contribute to a deeper understanding of the role of AI in healthcare, ultimately aiming to improve patient outcomes and support clinical decision-making.  
 
@@ -133,7 +134,7 @@ Example Output:
 }
 
 ```
-## Model Selection: BioMistral-7B
+## LLMs Selection: BioMistral-7B
 For this research, we propose to utilize the BioMistral-7B model, a state-of-the-art generative LLM developed by Yanis Labrak, Adrien Bazoge, Emmanuel Morin, Pierre-Antoine Gourraud, Mickael Rouvier, and Richard Dufour. Launched in 2024, BioMistral-7B has demonstrated exceptional capabilities in processing complex biomedical and clinical text. The model stands out due to its ability to understand and generate human-like responses in a medical context, which is attributed to its extensive pre-training on a diverse corpus of biomedical literature, clinical guidelines, and patient records.  
 - Paper address:https://arxiv.org/abs/2402.10373
 - Open source address: https://huggingface.co/BioMistral/BioMistral-7B
