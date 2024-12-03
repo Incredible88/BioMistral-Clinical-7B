@@ -1,1 +1,1 @@
-# BioMistral-Clinical 4B
+# BioMistral-Clinical 7B
