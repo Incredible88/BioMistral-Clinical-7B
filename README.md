@@ -52,6 +52,11 @@ with torch.no_grad():
     answer = tokenizer.decode(output[0], skip_special_tokens=True)
     print(answer)
 ```
+## Incremental learning
+The process of  incremental learning:    
+![image/png](https://cdn-uploads.huggingface.co/production/uploads/64850ea733e82e2c99337143/7i75kNDOR08WU4SXIhdb5.png)  
+The  training process records:    
+![image/png](https://cdn-uploads.huggingface.co/production/uploads/64850ea733e82e2c99337143/E1ES03zUNw8-mZ98Tz9lh.png)
 ## Clinical Scenario Analysis
 More informative answer:  
 ![image](https://github.com/user-attachments/assets/21a21e75-6014-43cf-8a40-0f296c0974a6)
