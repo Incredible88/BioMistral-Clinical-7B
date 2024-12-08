@@ -1,8 +1,15 @@
 from transformers import AutoModelForCausalLM, AutoTokenizer, BitsAndBytesConfig
+from transformers import AutoTokenizer, DataCollatorForLanguageModeling,TrainingArguments,Trainer
+import pandas as pd
+from transformers import AutoModelForCausalLM
+from datasets import Dataset
+import transformers
+from transformers import TrainerCallback
+from datetime import datetime
+import wandb
+import os
 import torch
 
-
-# 指定模型和分词器的本地路径
 local_model_dir = "AI-ModelScope/BioMistral-7B"
 bnb_config = BitsAndBytesConfig(
     load_in_4bit=True,
@@ -11,41 +18,32 @@ bnb_config = BitsAndBytesConfig(
     bnb_4bit_compute_dtype=torch.bfloat16
 )
 
-# 从本地路径加载分词器和模型
-# tokenizer = AutoTokenizer.from_pretrained(local_model_dir)
-# model = AutoModelForCausalLM.from_pretrained(local_model_dir, quantization_config=bnb_config)
+# Load the tokenizer and model from the local path
+tokenizer = AutoTokenizer.from_pretrained(local_model_dir)
 model = AutoModelForCausalLM.from_pretrained(local_model_dir)
 
-from transformers import AutoTokenizer, DataCollatorForLanguageModeling,TrainingArguments,Trainer
-import pandas as pd
-from transformers import AutoModelForCausalLM
-from datasets import Dataset
-
-import os
 directory = "PE/"
 
-# 获取目录下所有的 CSV 文件
+# Get all CSV files in the directory
 csv_files = [f for f in os.listdir(directory) if f.endswith('.csv') and not f.startswith('.')]
 
-# 初始化一个空的 DataFrame 来存储合并后的数据
+# Initialize an empty DataFrame to store the merged data
 all_data = pd.DataFrame()
 
-# 遍历文件列表，读取每个文件并合并到 all_data 中
+# Iterate through the file list, read each file and merge it into all_data
 for file in csv_files:
     file_path = os.path.join(directory, file)
     try:
-        # 读取 CSV 文件
         df = pd.read_csv(file_path, on_bad_lines='skip')
-        # 将当前文件的数据追加到 all_data 中
         all_data = pd.concat([all_data, df], ignore_index=True)
     except Exception as e:
-        print(f"读取文件 {file} 时发生错误：{e}")
+        print(f"Error reading file {file}: {e}")
 
-# 提取文本数据，假设文本在第二列
+# Extract text data, assuming the text is in the second column
 data = all_data.iloc[:, 0].reset_index(drop=True)
 data_list = data.tolist()
 
-# 将数据转换为 Hugging Face Dataset 格式
+# Convert data to Hugging Face Dataset format
 from datasets import Dataset
 dataset = Dataset.from_dict({"text": data_list})
 
@@ -54,25 +52,20 @@ from sklearn.model_selection import train_test_split
 
 data = dataset.to_pandas()
 
-# 使用 sklearn 的 train_test_split 来分割数据集
+# Use sklearn's train_test_split to split the dataset
 train_dataset, test_dataset = train_test_split(data, test_size=0.2, random_state=42)
 
-# 将分割后的数据转换回 Dataset 对象
+# Convert the segmented data back to a Dataset object
 train_dataset = dataset.from_pandas(train_dataset)
 test_dataset = dataset.from_pandas(test_dataset)
 
-
-# 现在你有了训练集、测试集和评估集
-print(train_dataset)
-print(test_dataset)
-
-
+# Select Freeze First 24 Layers
 num_layers_to_freeze = 24
 for i in range(num_layers_to_freeze):
     for param in model.model.layers[i].parameters():
         param.requires_grad = False
 
-# 确保嵌入层和输出层的参数不会被冻结
+# Ensure that the parameters of the embedding layer and output layer are not frozen
 for param in model.model.embed_tokens.parameters():
     param.requires_grad = True
 for param in model.lm_head.parameters():
@@ -104,28 +97,24 @@ def tokenize(prompt):
     )
     result["labels"] = result["input_ids"].copy()
     return result
+    
 tokenized_train_dataset = train_dataset.map(generate_and_tokenize_prompt)
 tokenized_test_dataset = test_dataset.map(generate_and_tokenize_prompt)
 
-import transformers
-from transformers import TrainerCallback
-from datetime import datetime
-import wandb
-
-# 设置项目和运行名称
-project = "biomistral-7B-incremental-trained1.2"
+# Set the project and run name
+project = "biomistral-7B-incremental-trained"
 base_model_name = "biomistral"
 run_name = base_model_name + "-" + project
 output_dir = "./" + run_name
 
-# 设置 W&B API key
-wandb_api_key = "5f5f94d3de9157cf146ad88ecc4e0518a7a7549e"
+# Set the W&B API key
+wandb_api_key = "Your_Key"
 wandb.login(key=wandb_api_key)
 
-# 初始化 wandb 运行
+# Initialize wandb to run
 wandb.init(project=project, name=run_name)
 
-# 配置 Trainer
+# Configure Trainer
 training_args = transformers.TrainingArguments(
     output_dir=output_dir,
     per_device_train_batch_size=4,
@@ -134,16 +123,16 @@ training_args = transformers.TrainingArguments(
     bf16=True,
     optim="paged_adamw_8bit",
     evaluation_strategy="steps",
-    eval_steps=200,  # 根据你的需要调整评估的步长
-    logging_steps=500,  # 记录日志的步长
-    save_steps=5000,  # 保存模型的步长
+    eval_steps=200,  
+    logging_steps=500, 
+    save_steps=5000, 
     report_to="wandb",
     run_name=f"{run_name}-{datetime.now().strftime('%Y-%m-%d-%H-%M')}"
 )
 
 class WandbEvaluationCallback(transformers.TrainerCallback):
     def on_evaluate(self, args, state, control, metrics=None, **kwargs):
-        # 在每个epoch结束时记录指标
+        # Record metrics at the end of each epoch
         if metrics:
             wandb.log(metrics)
 
@@ -156,11 +145,11 @@ trainer = transformers.Trainer(
     callbacks=[WandbEvaluationCallback()]
 )
 
-# 设置模型配置
+# Set model configuration
 model.config.use_cache = False  # Silence the warnings. Please re-enable for inference!
 
-# 开始训练并跟踪
+# Start training and tracking
 trainer.train()
 
-# 结束 wandb 运行
+# End wandb run
 wandb.finish()
